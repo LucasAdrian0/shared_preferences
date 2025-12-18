@@ -1,21 +1,21 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trilhaapp/services/app_storage.dart';
 
-class NumerosAleatoriosPage extends StatefulWidget {
-  const NumerosAleatoriosPage({super.key});
+class NumerosAleatoriosSharedPreferencesPage extends StatefulWidget {
+  const NumerosAleatoriosSharedPreferencesPage({super.key});
 
   @override
-  State<NumerosAleatoriosPage> createState() => _NumerosAleatoriosPageState();
+  State<NumerosAleatoriosSharedPreferencesPage> createState() =>
+      _NumerosAleatoriosSharedPreferencesPageState();
 }
 
-class _NumerosAleatoriosPageState extends State<NumerosAleatoriosPage> {
-  int? numeroGerado;
-  int? quantidadeCliques;
-  final CHAVE_NUMERO_ALEATORIO = "numero_aleatorio";
-  final CHAVE_QUANTIDADE_CLIQUES = "quantidade_cliques";
-  late SharedPreferences storage;
+class _NumerosAleatoriosSharedPreferencesPageState
+    extends State<NumerosAleatoriosSharedPreferencesPage> {
+  int numeroGerado = 0;
+  int quantidadeCliques = 0;
+  AppStorageService storage = AppStorageService();
 
   @override
   void initState() {
@@ -24,10 +24,9 @@ class _NumerosAleatoriosPageState extends State<NumerosAleatoriosPage> {
   }
 
   void carregarDados() async {
-    storage = await SharedPreferences.getInstance();
+    numeroGerado = await storage.getNumeroAleatorio();
+    quantidadeCliques = await storage.getQuantidadeClique();
     setState(() {});
-    numeroGerado = storage.getInt(CHAVE_NUMERO_ALEATORIO);
-    quantidadeCliques = storage.getInt(CHAVE_QUANTIDADE_CLIQUES);
   }
 
   @override
@@ -41,13 +40,13 @@ class _NumerosAleatoriosPageState extends State<NumerosAleatoriosPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                numeroGerado == null
+                numeroGerado == 0
                     ? "Nenhum numero gerado"
                     : numeroGerado.toString(),
                 style: TextStyle(fontSize: 22),
               ),
               Text(
-                quantidadeCliques == null
+                quantidadeCliques == 0
                     ? "Nenhum clique efetuado"
                     : quantidadeCliques.toString(),
                 style: TextStyle(fontSize: 22),
@@ -58,14 +57,14 @@ class _NumerosAleatoriosPageState extends State<NumerosAleatoriosPage> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: () async {
-            final storage = await SharedPreferences.getInstance();
+            final storage = await AppStorageService();
             var random = Random();
             setState(() {
               numeroGerado = random.nextInt(100);
-              quantidadeCliques = (quantidadeCliques ?? 0) + 1;
+              quantidadeCliques = quantidadeCliques + 1;
             });
-            storage.setInt(CHAVE_NUMERO_ALEATORIO, numeroGerado!);
-            storage.setInt(CHAVE_QUANTIDADE_CLIQUES, quantidadeCliques!);
+            await storage.setNumeroAleatorio(numeroGerado);
+            await storage.setQuantidadeCliques(quantidadeCliques);
           },
         ),
       ),

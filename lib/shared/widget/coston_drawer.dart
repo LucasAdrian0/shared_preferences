@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:trilhaapp/pages/configuracoes_page.dart';
-import 'package:trilhaapp/pages/dados_cadastrais.dart';
 import 'package:trilhaapp/pages/login_page.dart';
-import 'package:trilhaapp/pages/numeros_aletorios.dart';
+import 'package:trilhaapp/pages/dados_cadastrais.dart';
+import 'package:trilhaapp/pages/configuracoes/configuracoes_hive_page.dart';
+import 'package:trilhaapp/pages/numeros_aleatorio/numeros_aleatorios_hive_page.dart';
 
 class CustonDrawer extends StatelessWidget {
   const CustonDrawer({super.key});
@@ -139,7 +139,9 @@ class CustonDrawer extends StatelessWidget {
               Navigator.pop(context);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (bc) => const ConfiguracoesPage()),
+                MaterialPageRoute(
+                  builder: (bc) => const ConfiguracoesHivePage(),
+                ),
               );
             },
           ),
@@ -162,7 +164,7 @@ class CustonDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (bc) => const NumerosAleatoriosPage(),
+                  builder: (bc) => const NumerosAleatoriosHivePage(),
                 ),
               );
             },

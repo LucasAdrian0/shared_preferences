@@ -11,19 +11,36 @@ enum STORAGE_CHAVES {
   CHAVE_ALTURA,
   CHAVE_RECEBER_NOTIFICACAO,
   CHAVE_TEMA_ESCURO,
+  CHAVE_NUMERO_ALEATORIO,
+  CHAVE_QUANTIDADE_CLIQUES,
 }
 
 class AppStorageService {
-  Future<void> setConfiguracoesNomeUsuario(String nome) async {
-    await _setString(STORAGE_CHAVES.CHAVE_NOME_USUARIO.toString(), nome);
+  Future<int> getQuantidadeClique() async {
+    return _getInt(STORAGE_CHAVES.CHAVE_QUANTIDADE_CLIQUES.toString());
+  }
+
+  Future<void> setQuantidadeCliques(int value) async {
+    await _setInt(STORAGE_CHAVES.CHAVE_QUANTIDADE_CLIQUES.toString(), value);
+  }
+
+  Future<int> getNumeroAleatorio() async {
+    return _getInt(STORAGE_CHAVES.CHAVE_NUMERO_ALEATORIO.toString());
+  }
+
+  Future<void> setNumeroAleatorio(int value) async {
+    await _setInt(STORAGE_CHAVES.CHAVE_NUMERO_ALEATORIO.toString(), value);
   }
 
   Future<String> getConfiguracoesNomeUsuario() async {
     return _getString(STORAGE_CHAVES.CHAVE_NOME_USUARIO.toString());
   }
 
-  Future<void> setConfiguracoesAltura(String nome) async {
-    await _setString(STORAGE_CHAVES.CHAVE_ALTURA.toString(), nome);
+  Future<void> setConfiguracoesNomeUsuario(String nome) async {
+    await _setString(STORAGE_CHAVES.CHAVE_NOME_USUARIO.toString(), nome);
+  }
+  Future<void> setConfiguracoesAltura(double value) async {
+    await _setDouble(STORAGE_CHAVES.CHAVE_ALTURA.toString(), value);
   }
 
   Future<double> getConfiguracoesAltura() async {

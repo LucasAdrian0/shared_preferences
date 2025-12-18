@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trilhaapp/services/app_storage.dart';
 
-class ConfiguracoesPage extends StatefulWidget {
-  const ConfiguracoesPage({super.key});
+class ConfiguracoesSharedPreferencesPage extends StatefulWidget {
+  const ConfiguracoesSharedPreferencesPage({super.key});
 
   @override
-  State<ConfiguracoesPage> createState() => _ConfiguracoesPageState();
+  State<ConfiguracoesSharedPreferencesPage> createState() =>
+      _ConfiguracoesSharedPreferencesPageState();
 }
 
-class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
+class _ConfiguracoesSharedPreferencesPageState
+    extends State<ConfiguracoesSharedPreferencesPage> {
   AppStorageService storage = AppStorageService();
 
   TextEditingController nomeUsuarioController = TextEditingController();
@@ -22,14 +23,14 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     carregarDados();
   }
 
   void carregarDados() async {
     nomeUsuarioController.text = await storage.getConfiguracoesNomeUsuario();
-    alturaController.text = (await (storage.getConfiguracoesAltura())).toString();
+    alturaController.text = (await (storage.getConfiguracoesAltura()))
+        .toString();
     receberNotificacoes = await storage.getConfiguracoesReceberNotificacao();
     temaEscuro = await storage.getConfiguracoesTemaEscuro();
     setState(() {});
@@ -80,8 +81,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                 onPressed: () async {
                   FocusManager.instance.primaryFocus?.unfocus();
                   try {
-                    await storage.setDouble(
-                      CHAVE_ALTURA,
+                    await storage.setConfiguracoesAltura(
                       double.parse(alturaController.text),
                     );
                   } catch (e) {
@@ -104,15 +104,13 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                     );
                     return;
                   }
-                  await storage.setString(
-                    CHAVE_NOME_USUARIO,
+                  await storage.setConfiguracoesNomeUsuario(
                     nomeUsuarioController.text,
                   );
-                  await storage.setBool(
-                    CHAVE_RECEBERR_NOTIFICACAO,
+                  await storage.setConfiguracoesReceberNotificacao(
                     receberNotificacoes,
                   );
-                  await storage.setBool(CHAVE_TEMA_ESCURO, temaEscuro);
+                  await storage.setConfiguracoesTemaEscuro(temaEscuro);
                   Navigator.pop(context);
                 },
                 child: Text("Salvar"),
